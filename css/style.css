@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+
+    background: #f7f7f7;
+
+    margin: 0;
+
+    padding: 20px;
+}
+
+.container {
+    max-width: 500px;
+
+    margin: auto;
+
+    text-align: center;
+}
+
+h1 {
+    color: hotpink;
+}
+
+button {
+    width: 100%;
+
+    padding: 15px;
+
+    font-size: 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: hotpink;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 20px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 10px;
+}

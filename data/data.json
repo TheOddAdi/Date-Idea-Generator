@@ -1,0 +1,26 @@
+{
+    "restaurants": [
+        {
+            "name": "Texas Roadhouse"
+        },
+        {
+            "name": "Olive Garden"
+        }
+    ],
+    "activities": [
+        {
+            "name": "Mini Golf"
+        },
+        {
+            "name": "Bowling"
+        }
+    ],
+    "desserts": [
+        {
+            "name": "Graeter's Ice Cream"
+        },
+        {
+            "name": "Cheesecake"
+        }
+    ]
+}
