@@ -1,26 +1,68 @@
 {
     "restaurants": [
         {
-            "name": "Texas Roadhouse"
+            "name": "Texas Roadhouse",
+            "budget": "mid",
+            "location": "Cincinnati"
         },
         {
-            "name": "Olive Garden"
+            "name": "Olive Garden",
+            "budget": "mid",
+            "location": "Columbus"
+        },
+        {
+            "name": "Melt Bar & Grill",
+            "budget": "low",
+            "location": "Cincinnati"
+        },
+        {
+            "name": "The Capital Grille",
+            "budget": "high",
+            "location": "Columbus"
         }
     ],
     "activities": [
         {
-            "name": "Mini Golf"
+            "name": "Mini Golf",
+            "budget": "low",
+            "location": "Cincinnati"
         },
         {
-            "name": "Bowling"
+            "name": "Bowling",
+            "budget": "mid",
+            "location": "Columbus"
+        },
+        {
+            "name": "Museum Walk",
+            "budget": "mid",
+            "location": "Cincinnati"
+        },
+        {
+            "name": "Rooftop Picnic",
+            "budget": "low",
+            "location": "Columbus"
         }
     ],
     "desserts": [
         {
-            "name": "Graeter's Ice Cream"
+            "name": "Graeter's Ice Cream",
+            "budget": "low",
+            "location": "Columbus"
         },
         {
-            "name": "Cheesecake"
+            "name": "Cheesecake",
+            "budget": "mid",
+            "location": "Cincinnati"
+        },
+        {
+            "name": "Frozen Yogurt",
+            "budget": "low",
+            "location": "Columbus"
+        },
+        {
+            "name": "Chocolate Tasting",
+            "budget": "high",
+            "location": "Cincinnati"
         }
     ]
 }

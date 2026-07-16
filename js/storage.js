@@ -10,7 +10,7 @@ export async function loadData() {
     }
 
     const response =
-        await fetch("../data/data.json");
+        await fetch(new URL("../data/data.json", import.meta.url));
 
     const data =
         await response.json();
@@ -21,4 +21,11 @@ export async function loadData() {
     );
 
     return data;
+}
+
+export function saveData(data) {
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
 }

@@ -3,32 +3,99 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Date Generator">
+    <meta name="theme-color" content="#ff4d8d">
+    <link rel="manifest" href="manifest.json">
     <title>Date Generator</title>
-
-    css/style.css
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
     <div class="container">
+        <div class="card">
+            <h1>Date Generator ❤️</h1>
+            <p class="small">Make a quick plan for a date that fits your vibe.</p>
 
-        <h1>Date Generator ❤️</h1>
+            <div class="filters-grid">
+                <label>
+                    Budget
+                    <select id="budgetFilter">
+                        <option value="">Any</option>
+                        <option value="low">Low</option>
+                        <option value="mid">Mid</option>
+                        <option value="high">High</option>
+                    </select>
+                </label>
 
-        <button id="generateBtn">
-            Generate Date
-        </button>
+                <label>
+                    Location
+                    <select id="locationFilter">
+                        <option value="">Any</option>
+                        <option value="cincinnati">Cincinnati</option>
+                        <option value="columbus">Columbus</option>
+                    </select>
+                </label>
+            </div>
 
-        <div id="result">
-            Press the button!
+            <div class="actions">
+                <button id="generateBtn">Generate Date</button>
+                <button id="clearFiltersBtn" class="secondary">Clear</button>
+            </div>
         </div>
 
+        <div class="card">
+            <div id="result">Tap generate to get a fresh date idea.</div>
+        </div>
+
+        <button id="manageBtn" class="secondary manage-btn">Manage ideas</button>
     </div>
 
-    js/app.jsscript>
+    <div id="manageModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Manage ideas">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Manage ideas</h2>
+                <button id="closeManageModal" class="icon-btn">Close</button>
+            </div>
 
+            <div class="tab-row">
+                <button class="tab-btn active" data-tab="restaurants">Restaurants</button>
+                <button class="tab-btn" data-tab="activities">Activities</button>
+                <button class="tab-btn" data-tab="desserts">Desserts</button>
+            </div>
+
+            <div class="manage-section">
+                <div class="form-grid">
+                    <label>
+                        Name
+                        <input id="itemName" type="text" placeholder="e.g. Picnic in the park">
+                    </label>
+                    <label>
+                        Budget
+                        <select id="itemBudget">
+                            <option value="low">Low</option>
+                            <option value="mid">Mid</option>
+                            <option value="high">High</option>
+                        </select>
+                    </label>
+                    <label>
+                        Location
+                        <input id="itemLocation" type="text" placeholder="e.g. Cincinnati">
+                    </label>
+                </div>
+                <button id="addItemBtn">Add idea</button>
+            </div>
+
+            <div class="manage-section">
+                <h3>Saved ideas</h3>
+                <ul id="manageList" class="manage-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
 </body>
 
 </html>

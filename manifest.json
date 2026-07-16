@@ -1,0 +1,10 @@
+{
+    "name": "Date Generator",
+    "short_name": "DateGen",
+    "description": "Generate date ideas with filters and saved options",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#fff0f7",
+    "theme_color": "#ff4d8d",
+    "icons": []
+}
