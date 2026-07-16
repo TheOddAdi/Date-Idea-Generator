@@ -32,11 +32,10 @@
 
                 <label>
                     Location
-                    <select id="locationFilter">
-                        <option value="">Any</option>
-                        <option value="cincinnati">Cincinnati</option>
-                        <option value="columbus">Columbus</option>
-                    </select>
+                    <div class="location-toggle" role="group" aria-label="Location selection">
+                        <button type="button" class="toggle-btn" data-location="cincinnati">Cincinnati</button>
+                        <button type="button" class="toggle-btn" data-location="columbus">Columbus</button>
+                    </div>
                 </label>
             </div>
 

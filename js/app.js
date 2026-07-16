@@ -5,7 +5,7 @@ const generateBtn = document.getElementById("generateBtn");
 const clearFiltersBtn = document.getElementById("clearFiltersBtn");
 const result = document.getElementById("result");
 const budgetFilter = document.getElementById("budgetFilter");
-const locationFilter = document.getElementById("locationFilter");
+const locationButtons = document.querySelectorAll(".toggle-btn");
 const manageBtn = document.getElementById("manageBtn");
 const manageModal = document.getElementById("manageModal");
 const closeManageModalButton = document.getElementById("closeManageModal");
@@ -19,6 +19,7 @@ const manageList = document.getElementById("manageList");
 let data = {};
 let activeCategory = "restaurants";
 let lastGenerated = {};
+let selectedLocation = "";
 
 async function init() {
     data = await loadData();
@@ -135,10 +136,24 @@ function removeItem(category, name) {
     renderManageList();
 }
 
+function setLocationSelection(location) {
+    selectedLocation = location;
+
+    locationButtons.forEach((button) => {
+        const isActive = button.dataset.location === location;
+        button.classList.toggle("active", isActive);
+    });
+}
+
 generateBtn.addEventListener("click", () => {
+    if (!selectedLocation) {
+        result.innerHTML = '<p class="small">Please select Cincinnati or Columbus before generating.</p>';
+        return;
+    }
+
     const filters = {
         budget: budgetFilter.value,
-        location: locationFilter.value
+        location: selectedLocation
     };
 
     const date = generateDate(data, filters, lastGenerated);
@@ -148,7 +163,7 @@ generateBtn.addEventListener("click", () => {
 
 clearFiltersBtn.addEventListener("click", () => {
     budgetFilter.value = "";
-    locationFilter.value = "";
+    setLocationSelection("");
 });
 
 manageBtn.addEventListener("click", openManageModal);
@@ -166,6 +181,13 @@ tabButtons.forEach((button) => {
     });
 });
 
+locationButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const nextLocation = button.dataset.location === selectedLocation ? "" : button.dataset.location;
+        setLocationSelection(nextLocation);
+    });
+});
+
 addItemBtn.addEventListener("click", addItem);
 
 manageList.addEventListener("click", (event) => {
@@ -179,3 +201,4 @@ manageList.addEventListener("click", (event) => {
 
 init();
 setActiveTab(activeCategory);
+setLocationSelection(selectedLocation);

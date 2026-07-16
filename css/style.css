@@ -97,6 +97,25 @@ button.tab-btn.active {
     transform: translateY(-1px);
 }
 
+.location-toggle {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.toggle-btn {
+    width: 100%;
+    background: #fff8fb;
+    color: #b3004b;
+    border: 1px solid #ffdce9;
+    box-shadow: none;
+}
+
+.toggle-btn.active {
+    background: linear-gradient(135deg, #ff5b97, #ff4d8d);
+    color: white;
+}
+
 .form-grid,
 .filters-grid {
     display: grid;
