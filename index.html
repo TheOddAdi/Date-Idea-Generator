@@ -10,6 +10,7 @@
     <meta name="theme-color" content="#ff4d8d">
     <link rel="manifest" href="manifest.json">
     <title>Date Generator</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -24,9 +25,19 @@
                     Budget
                     <select id="budgetFilter">
                         <option value="">Any</option>
-                        <option value="low">Low</option>
-                        <option value="mid">Mid</option>
-                        <option value="high">High</option>
+                        <option value="$">$</option>
+                        <option value="$$">$$</option>
+                        <option value="$$$">$$$</option>
+                    </select>
+                </label>
+
+                <label>
+                    Duration
+                    <select id="durationFilter">
+                        <option value="">Any</option>
+                        <option value="under-1hr">&lt;1hr</option>
+                        <option value="1-2hrs">1-2hrs</option>
+                        <option value="2plus-hrs">2+hrs</option>
                     </select>
                 </label>
 
@@ -66,22 +77,35 @@
             </div>
 
             <div class="manage-section">
+                <div id="editStatus" class="small"></div>
                 <div class="form-grid">
                     <label>
                         Name
                         <input id="itemName" type="text" placeholder="e.g. Picnic in the park">
                     </label>
-                    <label>
+                    <label id="budgetField">
                         Budget
                         <select id="itemBudget">
-                            <option value="low">Low</option>
-                            <option value="mid">Mid</option>
-                            <option value="high">High</option>
+                            <option value="$">$</option>
+                            <option value="$$">$$</option>
+                            <option value="$$$">$$$</option>
                         </select>
                     </label>
-                    <label>
+                    <label id="durationField">
+                        Duration
+                        <select id="itemDuration">
+                            <option value="under-1hr">&lt;1hr</option>
+                            <option value="1-2hrs">1-2hrs</option>
+                            <option value="2plus-hrs">2+hrs</option>
+                        </select>
+                    </label>
+                    <label id="locationField">
                         Location
-                        <input id="itemLocation" type="text" placeholder="e.g. Cincinnati">
+                        <div class="location-toggle small-toggle" role="group" aria-label="Idea location selection">
+                            <button type="button" class="toggle-btn" data-item-location="cincinnati">Cincinnati</button>
+                            <button type="button" class="toggle-btn" data-item-location="columbus">Columbus</button>
+                            <button type="button" class="toggle-btn" data-item-location="both">Both</button>
+                        </div>
                     </label>
                 </div>
                 <button id="addItemBtn">Add idea</button>

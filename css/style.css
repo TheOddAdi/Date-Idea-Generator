@@ -109,11 +109,26 @@ button.tab-btn.active {
     color: #b3004b;
     border: 1px solid #ffdce9;
     box-shadow: none;
+    padding: 12px 10px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.toggle-btn:hover {
+    background: #ffe7f0;
+    transform: translateY(-1px);
 }
 
 .toggle-btn.active {
     background: linear-gradient(135deg, #ff5b97, #ff4d8d);
     color: white;
+    border-color: #ff4d8d;
+    box-shadow: 0 6px 14px rgba(255, 77, 141, 0.2);
+}
+
+.small-toggle .toggle-btn {
+    padding: 10px 8px;
+    font-size: 14px;
 }
 
 .form-grid,
@@ -174,6 +189,9 @@ select:focus {
     border: 1px solid #ffdce9;
     border-radius: 12px;
     padding: 12px;
+}
+
+#result .result-card.is-refreshing {
     animation: fadeInUp 0.28s ease;
 }
 
@@ -194,6 +212,8 @@ select:focus {
 
 .modal-card {
     width: min(100%, 560px);
+    max-height: min(90vh, 760px);
+    overflow-y: auto;
     background: white;
     border-radius: 20px;
     padding: 18px;
@@ -238,9 +258,32 @@ select:focus {
     padding: 8px 10px;
 }
 
+.actions-inline {
+    display: flex;
+    gap: 6px;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.refresh-btn {
+    width: auto;
+    padding: 6px 8px;
+    min-width: 34px;
+}
+
 .small {
     font-size: 0.85rem;
     color: #7d6472;
+}
+
+.field-hidden {
+    display: none;
 }
 
 @keyframes fadeInUp {

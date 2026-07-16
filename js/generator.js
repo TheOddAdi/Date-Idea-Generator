@@ -22,15 +22,51 @@ function pickDifferentItem(items, previousItem, fallbackItems = []) {
     return randomItem(fallback);
 }
 
+function budgetMatches(itemBudget, selectedBudget) {
+    if (!selectedBudget) {
+        return true;
+    }
+
+    const budgetRank = { "$": 1, "$$": 2, "$$$": 3 };
+    const itemRank = budgetRank[itemBudget?.toLowerCase()] || 0;
+    const selectedRank = budgetRank[selectedBudget.toLowerCase()] || 0;
+
+    return itemRank > 0 && itemRank <= selectedRank;
+}
+
+function durationMatches(itemDuration, selectedDuration) {
+    if (!selectedDuration) {
+        return true;
+    }
+
+    const durationRank = {
+        "under-1hr": 1,
+        "1-2hrs": 2,
+        "2plus-hrs": 3
+    };
+
+    const itemRank = durationRank[itemDuration?.toLowerCase()] || 0;
+    const selectedRank = durationRank[selectedDuration.toLowerCase()] || 0;
+
+    return itemRank > 0 && itemRank <= selectedRank;
+}
+
 export function getFilteredItems(items, filters = {}) {
     const budget = (filters.budget || "").toLowerCase();
     const location = (filters.location || "").trim().toLowerCase();
+    const duration = (filters.duration || "").toLowerCase();
 
     return (items || []).filter((item) => {
-        const matchesBudget = !budget || (item.budget || "mid").toLowerCase() === budget;
-        const matchesLocation = !location || (item.location || "").toLowerCase() === location;
+        const normalizedBudget = (item.budget || "").toLowerCase();
+        const normalizedDuration = (item.duration || "").toLowerCase();
+        const hasBudget = Boolean(item.budget);
+        const hasDuration = Boolean(item.duration);
+        const matchesBudget = !budget || !hasBudget || budgetMatches(normalizedBudget, budget);
+        const matchesDuration = !duration || !hasDuration || durationMatches(normalizedDuration, duration);
+        const itemLocation = (item.location || "").toLowerCase();
+        const matchesLocation = !location || itemLocation === "both" || itemLocation === location || itemLocation === "";
 
-        return matchesBudget && matchesLocation;
+        return matchesBudget && matchesDuration && matchesLocation;
     });
 }
 
