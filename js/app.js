@@ -24,6 +24,18 @@ const locationField = document.getElementById("locationField");
 const itemLocationButtons = document.querySelectorAll("[data-item-location]");
 const manageList = document.getElementById("manageList");
 const editStatus = document.getElementById("editStatus");
+const dbSpinner = document.getElementById("dbSpinner");
+
+function showSpinner(message = 'Saving…') {
+    if (dbSpinner) {
+        dbSpinner.textContent = message;
+        dbSpinner.classList.remove('hidden');
+    }
+}
+
+function hideSpinner() {
+    if (dbSpinner) dbSpinner.classList.add('hidden');
+}
 
 let data = {};
 let activeCategory = "restaurants";
@@ -75,7 +87,7 @@ function formatDetails(category, item) {
     return details.join(" • ");
 }
 
-function createResultCard(category, item) {
+function createResultCard(category, item, index = 0) {
     const labels = {
         restaurant: { title: "🍽 Restaurant", label: "Regenerate restaurant" },
         activity: { title: "🎯 Activity", label: "Regenerate activity" },
@@ -85,7 +97,7 @@ function createResultCard(category, item) {
     const { title, label } = labels[category] || labels.restaurant;
 
     return `
-        <div class="result-card" data-category="${category}">
+        <div class="result-card" data-category="${category}" style="--i:${index}">
             <div class="result-header">
                 <h2>${title}</h2>
                 <button class="icon-btn refresh-btn" data-category="${category}" type="button" aria-label="${label}">↻</button>
@@ -123,9 +135,9 @@ function renderResult(date, refreshedCategory = null) {
     }
 
     result.innerHTML = [
-        createResultCard("restaurant", date.restaurant),
-        createResultCard("activity", date.activity),
-        createResultCard("dessert", date.dessert)
+        createResultCard("restaurant", date.restaurant, 0),
+        createResultCard("activity", date.activity, 1),
+        createResultCard("dessert", date.dessert, 2)
     ].join("");
 }
 
@@ -253,11 +265,15 @@ function setActiveTab(category) {
 }
 
 function openManageModal() {
-    manageModal.classList.remove("hidden");
+    manageModal.classList.remove('hidden', 'closing');
 }
 
 function hideManageModal() {
-    manageModal.classList.add("hidden");
+    manageModal.classList.add('closing');
+    manageModal.addEventListener('animationend', () => {
+        manageModal.classList.add('hidden');
+        manageModal.classList.remove('closing');
+    }, { once: true });
 }
 
 function resetEditor() {
@@ -310,7 +326,7 @@ async function addItem() {
     }
 
     addItemBtn.disabled = true;
-    editStatus.textContent = 'Saving...';
+    showSpinner('Saving…');
     try {
         await saveData(data);
         renderManageList();
@@ -320,6 +336,7 @@ async function addItem() {
         editStatus.textContent = 'Save failed. See console.';
     } finally {
         addItemBtn.disabled = false;
+        hideSpinner();
     }
 }
 
@@ -329,6 +346,7 @@ async function removeItem(category, name) {
     }
 
     data[category] = data[category].filter((item) => item.name !== name);
+    showSpinner('Removing…');
     try {
         await saveData(data);
         renderManageList();
@@ -341,6 +359,8 @@ async function removeItem(category, name) {
         } catch (e) {
             console.error('Failed to reload data after failed remove', e);
         }
+    } finally {
+        hideSpinner();
     }
 }
 

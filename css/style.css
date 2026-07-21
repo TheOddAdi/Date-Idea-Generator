@@ -1,3 +1,28 @@
+.container>* {
+    animation: pageEnter 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: calc(var(--i, 0) * 110ms);
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .container>*,
+    #result .result-card {
+        animation: none;
+    }
+}
+
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #fff0f7, #ffe4ef);
@@ -189,10 +214,12 @@ select:focus {
     border: 1px solid #ffdce9;
     border-radius: 12px;
     padding: 12px;
+    animation: cardFloat 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
 }
 
 #result .result-card.is-refreshing {
-    animation: fadeInUp 0.28s ease;
+    animation: cardPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .modal {
@@ -204,10 +231,19 @@ select:focus {
     justify-content: center;
     padding: 16px;
     z-index: 10;
+    animation: backdropIn 0.22s ease both;
 }
 
 .modal.hidden {
     display: none;
+}
+
+.modal.closing {
+    animation: backdropOut 0.22s ease both;
+}
+
+.modal.closing .modal-card {
+    animation: modalSlideOut 0.22s cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 .modal-card {
@@ -219,7 +255,7 @@ select:focus {
     padding: 18px;
     display: grid;
     gap: 12px;
-    animation: modalSlideIn 0.24s ease;
+    animation: modalSlideIn 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .modal-header {
@@ -298,15 +334,107 @@ select:focus {
     }
 }
 
-@keyframes modalSlideIn {
+@keyframes cardFloat {
     from {
         opacity: 0;
-        transform: translateY(10px) scale(0.98);
+        transform: translateY(22px) scale(0.96);
     }
 
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cardPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.90);
+    }
+
+    65% {
+        transform: scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.db-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 4px;
+    color: #ff4d8d;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.db-spinner::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffdce9;
+    border-top-color: #ff4d8d;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+.db-spinner.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes modalSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(14px) scale(0.97);
+    }
+}
+
+@keyframes backdropIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes backdropOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
     }
 }
 

@@ -159,10 +159,8 @@ export async function loadData() {
         // Always read directly from Supabase
         return await readFromDatabase();
     } catch (error) {
-        // Fallback to bundled JSON when DB is unreachable; do not cache locally
-        console.warn('Supabase load failed, falling back to local JSON (read-only):', error.message || error);
-        const response = await fetch(new URL('../data/data.json', import.meta.url));
-        return await response.json();
+        console.error('Supabase load failed:', error.message || error);
+        return { restaurants: [], activities: [], desserts: [] };
     }
 }
 
