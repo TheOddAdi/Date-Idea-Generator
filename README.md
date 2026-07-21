@@ -13,10 +13,6 @@ This project aims to provide inspiration and suggestions for date activities, he
 - Get descriptions and tips for each idea
 - Discover new activities suited to different moods and budgets
 
-## Contributing
-
-Contributions are welcome! Feel free to submit pull requests or open issues with suggestions.
-
 ## License
 
 MIT License
