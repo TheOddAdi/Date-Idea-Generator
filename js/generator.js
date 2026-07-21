@@ -54,6 +54,7 @@ function durationMatches(itemDuration, selectedDuration) {
 export function getFilteredItems(items, filters = {}) {
     const budget = (filters.budget || "").toLowerCase();
     const location = (filters.location || "").trim().toLowerCase();
+    const setting = (filters.setting || "").toLowerCase();
     const duration = (filters.duration || "").toLowerCase();
 
     return (items || []).filter((item) => {
@@ -63,10 +64,12 @@ export function getFilteredItems(items, filters = {}) {
         const hasDuration = Boolean(item.duration);
         const matchesBudget = !budget || !hasBudget || budgetMatches(normalizedBudget, budget);
         const matchesDuration = !duration || !hasDuration || durationMatches(normalizedDuration, duration);
+        const itemSetting = (item.setting || "").toLowerCase();
+        const matchesSetting = !setting || !itemSetting || itemSetting === 'both' || itemSetting === setting;
         const itemLocation = (item.location || "").toLowerCase();
         const matchesLocation = !location || itemLocation === "both" || itemLocation === location || itemLocation === "";
 
-        return matchesBudget && matchesDuration && matchesLocation;
+        return matchesBudget && matchesDuration && matchesLocation && matchesSetting;
     });
 }
 

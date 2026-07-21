@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Date Generator">
     <meta name="theme-color" content="#ff4d8d">
@@ -38,6 +39,15 @@
                         <option value="under-1hr">&lt;1hr</option>
                         <option value="1-2hrs">1-2hrs</option>
                         <option value="2plus-hrs">2+hrs</option>
+                    </select>
+                </label>
+
+                <label>
+                    Setting
+                    <select id="settingFilter">
+                        <option value="">Any</option>
+                        <option value="indoor">Indoor</option>
+                        <option value="outdoor">Outdoor</option>
                     </select>
                 </label>
 
@@ -99,6 +109,15 @@
                             <option value="2plus-hrs">2+hrs</option>
                         </select>
                     </label>
+                    <label id="settingField">
+                        Setting
+                        <select id="itemSetting">
+                            <option value="">Any</option>
+                            <option value="indoor">Indoor</option>
+                            <option value="outdoor">Outdoor</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </label>
                     <label id="locationField">
                         Location
                         <div class="location-toggle small-toggle" role="group" aria-label="Idea location selection">
@@ -121,4 +140,4 @@
     <script type="module" src="js/app.js"></script>
 </body>
 
-</html>
+</html>>

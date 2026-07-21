@@ -6,6 +6,7 @@ const clearFiltersBtn = document.getElementById("clearFiltersBtn");
 const result = document.getElementById("result");
 const budgetFilter = document.getElementById("budgetFilter");
 const durationFilter = document.getElementById("durationFilter");
+const settingFilter = document.getElementById("settingFilter");
 const locationButtons = document.querySelectorAll(".toggle-btn");
 const manageBtn = document.getElementById("manageBtn");
 const manageModal = document.getElementById("manageModal");
@@ -15,8 +16,10 @@ const addItemBtn = document.getElementById("addItemBtn");
 const itemName = document.getElementById("itemName");
 const itemBudget = document.getElementById("itemBudget");
 const itemDuration = document.getElementById("itemDuration");
+const itemSetting = document.getElementById("itemSetting");
 const budgetField = document.getElementById("budgetField");
 const durationField = document.getElementById("durationField");
+const settingField = document.getElementById("settingField");
 const locationField = document.getElementById("locationField");
 const itemLocationButtons = document.querySelectorAll("[data-item-location]");
 const manageList = document.getElementById("manageList");
@@ -38,6 +41,7 @@ function getCurrentFilters() {
     return {
         budget: budgetFilter.value,
         duration: durationFilter.value,
+        setting: settingFilter ? settingFilter.value : "",
         location: selectedLocation
     };
 }
@@ -59,6 +63,9 @@ function formatDetails(category, item) {
 
     if (category === "activity" && item?.duration) {
         details.push(`Duration: ${item.duration}`);
+    }
+    if (category === "activity" && item?.setting) {
+        details.push(`Setting: ${item.setting}`);
     }
 
     if (category === "dessert" && item?.budget) {
@@ -167,11 +174,13 @@ function isDessertCategory() {
 function updateFormFields() {
     budgetField.classList.toggle("field-hidden", isDessertCategory());
     durationField.classList.toggle("field-hidden", !isActivityCategory());
+    settingField.classList.toggle("field-hidden", !isActivityCategory());
     locationField.classList.toggle("field-hidden", isDessertCategory());
 
     if (isDessertCategory()) {
         itemBudget.value = "";
         itemDuration.value = "";
+        if (itemSetting) itemSetting.value = "";
     } else {
         if (!itemBudget.value) {
             itemBudget.value = "$$";
@@ -210,6 +219,9 @@ function renderManageList() {
 
                 if (isActivityCategory() && item.duration) {
                     details.push(item.duration);
+                }
+                if (isActivityCategory() && item.setting) {
+                    details.push(item.setting);
                 }
             }
 
@@ -254,11 +266,12 @@ function resetEditor() {
     itemBudget.value = isDessertCategory() ? "" : "$$";
     itemDuration.value = isActivityCategory() ? "1-2hrs" : "";
     setItemLocationSelection("");
+    if (itemSetting) itemSetting.value = "";
     addItemBtn.textContent = "Add idea";
     editStatus.textContent = "";
 }
 
-function addItem() {
+async function addItem() {
     const name = itemName.value.trim();
     if (!name) {
         return;
@@ -279,6 +292,9 @@ function addItem() {
     if (isActivityCategory() && itemDuration.value) {
         itemData.duration = itemDuration.value;
     }
+    if (isActivityCategory() && itemSetting && itemSetting.value) {
+        itemData.setting = itemSetting.value;
+    }
 
     if (!data[activeCategory]) {
         data[activeCategory] = [];
@@ -293,19 +309,39 @@ function addItem() {
         data[activeCategory].push(itemData);
     }
 
-    saveData(data);
-    renderManageList();
-    resetEditor();
+    addItemBtn.disabled = true;
+    editStatus.textContent = 'Saving...';
+    try {
+        await saveData(data);
+        renderManageList();
+        resetEditor();
+    } catch (err) {
+        console.error('Save failed', err);
+        editStatus.textContent = 'Save failed. See console.';
+    } finally {
+        addItemBtn.disabled = false;
+    }
 }
 
-function removeItem(category, name) {
+async function removeItem(category, name) {
     if (!data[category]) {
         return;
     }
 
     data[category] = data[category].filter((item) => item.name !== name);
-    saveData(data);
-    renderManageList();
+    try {
+        await saveData(data);
+        renderManageList();
+    } catch (err) {
+        console.error('Remove failed', err);
+        // revert in-memory change by reloading from DB
+        try {
+            data = await loadData();
+            renderManageList();
+        } catch (e) {
+            console.error('Failed to reload data after failed remove', e);
+        }
+    }
 }
 
 function editItem(category, name) {
@@ -322,6 +358,7 @@ function editItem(category, name) {
     itemName.value = item.name;
     itemBudget.value = isDessertCategory() ? (item.budget || "") : (item.budget || "$$");
     itemDuration.value = isActivityCategory() ? (item.duration || "1-2hrs") : "";
+    if (itemSetting) itemSetting.value = isActivityCategory() ? (item.setting || "") : "";
     setItemLocationSelection(isDessertCategory() ? "" : (item.location || ""));
     addItemBtn.textContent = "Save changes";
     editStatus.textContent = `Editing ${item.name}`;
@@ -361,6 +398,7 @@ generateBtn.addEventListener("click", () => {
 clearFiltersBtn.addEventListener("click", () => {
     budgetFilter.value = "";
     durationFilter.value = "";
+    if (settingFilter) settingFilter.value = "";
     setLocationSelection("");
 });
 
@@ -395,7 +433,7 @@ itemLocationButtons.forEach((button) => {
 
 addItemBtn.addEventListener("click", addItem);
 
-manageList.addEventListener("click", (event) => {
+manageList.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-category]");
     if (!button) {
         return;
@@ -407,7 +445,7 @@ manageList.addEventListener("click", (event) => {
     if (action === "edit") {
         editItem(category, name);
     } else {
-        removeItem(category, name);
+        await removeItem(category, name);
     }
 });
 
